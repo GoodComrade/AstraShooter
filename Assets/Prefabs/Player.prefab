@@ -100,8 +100,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 484448ba3bb36b6479fa7ba8eb91112a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 15
-  padding: 1
   projectile: {fileID: 1680325308994578, guid: dcb0cd63143e7de40ae01bad4b321214, type: 3}
   projectileSpeed: 25
   firingRate: 0.2
@@ -117,7 +115,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

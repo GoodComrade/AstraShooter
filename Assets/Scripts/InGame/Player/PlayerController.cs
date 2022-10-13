@@ -7,52 +7,23 @@ public class PlayerController : MonoBehaviour {
     private float thrust = 6f;
     private float rotationSpeed = 180f;
     private float MaxSpeed = 4.5f;
-    public float padding = 0;
     public GameObject projectile;
     public float projectileSpeed;
     public float firingRate = 0.2f;
-    public int health = 3;
+    private int health = 3;
 
     public AudioClip fireSound;
 
     private Rigidbody2D rb;
 
-    void OnTriggerEnter2D(Collider2D collider)
-    {
-        GameObject missile = collider.gameObject;
-        if (missile.tag == "Asteroid")
-        {
-            health -= 1;
-            //TODO: Implement AsteroidController with this function
-            //missile.GetComponent<AsteroidController>().Hit();
-            if (health <= 0)
-            {
-                Die();
-            }
-        }
-    }
-
-    void Die()
-    {
-        //LevelManager man = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-        //man.LoadLevel("Win Screen");
-        Destroy(gameObject);
-    }
+    
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
     }
-
-    void Fire()
+    void Update()
     {
-        GameObject beam = Instantiate(projectile, transform.GetChild(0).position, transform.rotation) as GameObject;
-        beam.GetComponent<Rigidbody2D>().AddForce(transform.up * projectileSpeed);
-        AudioSource.PlayClipAtPoint(fireSound, transform.position);
-    }
-
-    void Update ()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             InvokeRepeating("Fire", 0.000001f, firingRate);
         }
@@ -64,6 +35,14 @@ public class PlayerController : MonoBehaviour {
         ControlRocket();
         CheckPosition();
     }
+    void Fire()
+    {
+        GameObject beam = Instantiate(projectile, transform.GetChild(0).position, transform.rotation) as GameObject;
+        beam.GetComponent<Rigidbody2D>().AddForce(transform.up * projectileSpeed);
+        AudioSource.PlayClipAtPoint(fireSound, transform.position);
+    }
+
+    
     private void ControlRocket()
     {
         transform.Rotate(0, 0, -Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime);
@@ -97,5 +76,27 @@ public class PlayerController : MonoBehaviour {
         {
             transform.position = new Vector2(transform.position.x, sceneTopEdge);
         }
+    }
+    void OnCollisionEnter2D(Collision2D collisionInfo)
+    {
+        
+        if (collisionInfo.collider.tag == "Asteroid")
+        {
+            health -= 1;
+            rb.velocity = new Vector3(0f, 0f, 0f);
+            rb.angularVelocity = 0;
+            Debug.Log("Damage!");
+            if (health <= 0)
+            {
+                Die();
+            }
+        }
+    }
+
+    void Die()
+    {
+        //LevelManager man = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+        //man.LoadLevel("Win Screen");
+        Destroy(gameObject);
     }
 }

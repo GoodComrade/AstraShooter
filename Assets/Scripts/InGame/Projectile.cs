@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
 
-    public float damage = 100f;
-
-    public float GetDamage ()
-    {
-        return damage;
-    }
-
     public void Hit ()
     {
+        Debug.Log("Hit!");
         Destroy(gameObject);
+    }
+
+    private void Update()
+    {
+        Destroy(gameObject, 4.0f);
     }
 }
