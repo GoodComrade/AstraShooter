@@ -12,14 +12,14 @@ GameObject:
   - component: {fileID: 1349631352648510407}
   - component: {fileID: 4212239399798995665}
   - component: {fileID: 7621880190587196234}
-  - component: {fileID: 4461811040620860958}
-  m_Layer: 0
+  - component: {fileID: 8928976187896502035}
+  m_Layer: 7
   m_Name: Asteroid
   m_TagString: Asteroid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2086817422078161910
 Transform:
   m_ObjectHideFlags: 0
@@ -141,7 +141,7 @@ PolygonCollider2D:
       - {x: 0.19999999, y: -0.285}
       - {x: 0.28, y: -0.175}
       - {x: 0.28, y: 0.044999998}
---- !u!114 &4461811040620860958
+--- !u!114 &8928976187896502035
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,7 +150,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3127039609937117979}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a080e8df804b984bba7ee5d57265b93, type: 3}
+  m_Script: {fileID: 11500000, guid: 32e021bbd787dad4d9c2d23ce241adb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rock: {fileID: 3127039609937117979}
+  sprites:
+  - {fileID: 622199710, guid: 9da19a6b78fab1d40bdd7ab1cb64181c, type: 3}
+  size: 1
+  minSize: 0.35
+  maxSize: 1.65
+  movementSpeed: 50
+  maxLifetime: 30

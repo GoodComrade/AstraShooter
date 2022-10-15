@@ -2,32 +2,56 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
+    private PlayerModel model;
+    [SerializeField]
     private float thrust = 6f;
+    [SerializeField]
     private float rotationSpeed = 180f;
+    [SerializeField]
     private float MaxSpeed = 4.5f;
-    public GameObject projectile;
-    public float projectileSpeed;
-    public float firingRate = 0.2f;
+    [SerializeField]
     private int health = 3;
 
+    public Projectile projectile;
+    public float firingRate = 0.2f;
     public AudioClip fireSound;
 
+    private int score = 0;
     private Rigidbody2D rb;
 
-    
+    float sceneWidth;
+    float sceneHeight;
+
+    float sceneRightEdge;
+    float sceneLeftEdge;
+    float sceneTopEdge;
+    float sceneBottomEdge;
+
+
     void Start()
     {
+        model = new PlayerModel();
         rb = GetComponent<Rigidbody2D>();
+        model.SetCharacterData(thrust, rotationSpeed, MaxSpeed, health, score);
+
+        sceneWidth = Camera.main.orthographicSize * 2 * Camera.main.aspect;
+        sceneHeight = Camera.main.orthographicSize * 2;
+
+        sceneRightEdge = sceneWidth / 2;
+        sceneLeftEdge = sceneRightEdge * -1;
+        sceneTopEdge = sceneHeight / 2;
+        sceneBottomEdge = sceneTopEdge * -1;
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             InvokeRepeating("Fire", 0.000001f, firingRate);
         }
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.Space) || Input.GetMouseButtonUp(0))
         {
             CancelInvoke("Fire");
         }
@@ -37,36 +61,26 @@ public class PlayerController : MonoBehaviour {
     }
     void Fire()
     {
-        GameObject beam = Instantiate(projectile, transform.GetChild(0).position, transform.rotation) as GameObject;
-        beam.GetComponent<Rigidbody2D>().AddForce(transform.up * projectileSpeed);
+        Projectile beam = Instantiate(projectile, transform.position, transform.rotation);
+        beam.Project(transform.up);
         AudioSource.PlayClipAtPoint(fireSound, transform.position);
     }
 
-    
     private void ControlRocket()
     {
-        transform.Rotate(0, 0, -Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime);
-        rb.AddForce(transform.up * thrust * Input.GetAxis("Vertical"));
-        rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -MaxSpeed, MaxSpeed), Mathf.Clamp(rb.velocity.y, -MaxSpeed, MaxSpeed));
+        transform.Rotate(0, 0, -Input.GetAxis("Horizontal") * model.playerRotationSpeed * Time.deltaTime);
+        rb.AddForce(transform.up * model.playerThrust * Input.GetAxis("Vertical"));
+        rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -model.playerMaxSpeed, model.playerMaxSpeed), Mathf.Clamp(rb.velocity.y, -model.playerMaxSpeed, model.playerMaxSpeed));
     }
     private void CheckPosition()
     {
-
-        float sceneWidth = Camera.main.orthographicSize * 2 * Camera.main.aspect;
-        float sceneHeight = Camera.main.orthographicSize * 2;
-
-        float sceneRightEdge = sceneWidth / 2;
-        float sceneLeftEdge = sceneRightEdge * -1;
-        float sceneTopEdge = sceneHeight / 2;
-        float sceneBottomEdge = sceneTopEdge * -1;
-
         if (transform.position.x > sceneRightEdge)
         {
             transform.position = new Vector2(sceneLeftEdge, transform.position.y);
         }
-        if (transform.position.x < sceneLeftEdge) 
-        { 
-            transform.position = new Vector2(sceneRightEdge, transform.position.y); 
+        if (transform.position.x < sceneLeftEdge)
+        {
+            transform.position = new Vector2(sceneRightEdge, transform.position.y);
         }
         if (transform.position.y > sceneTopEdge)
         {
@@ -82,11 +96,11 @@ public class PlayerController : MonoBehaviour {
         
         if (collisionInfo.collider.tag == "Asteroid")
         {
-            health -= 1;
-            rb.velocity = new Vector3(0f, 0f, 0f);
-            rb.angularVelocity = 0;
-            Debug.Log("Damage!");
-            if (health <= 0)
+            model.playerHP -= 1;
+            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, 0f);
+            rb.angularVelocity = 0f;
+            Debug.Log(model.playerHP);
+            if (model.playerHP <= 0)
             {
                 Die();
             }
@@ -95,8 +109,6 @@ public class PlayerController : MonoBehaviour {
 
     void Die()
     {
-        //LevelManager man = GameObject.Find("LevelManager").GetComponent<LevelManager>();
-        //man.LoadLevel("Win Screen");
         Destroy(gameObject);
     }
 }
