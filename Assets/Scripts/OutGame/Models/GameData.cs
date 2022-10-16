@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 // Game data model.
+[Serializable]
 public struct GameData
 {
     // Index of selected level
@@ -17,4 +19,6 @@ public struct GameData
 
     //If win condition is destroyed asteroids amount
     public int asteroidsToWin;
+
+    public int lastOpenedLevel;
 }

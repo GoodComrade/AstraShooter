@@ -11,4 +11,8 @@ public class Keys
     public const string GAME_DATA_KEY = "GameData";
     // Player Data key for Data storage
     public const string PLAYER_DATA_KEY = "PlayerData";
+
+    public const string SAVE_DIRECTORY_KEY = "Saves";
+
+    public const string SAVE_NAME_KEY = "SavedGame";
 }

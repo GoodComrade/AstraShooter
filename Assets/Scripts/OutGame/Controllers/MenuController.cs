@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,25 +9,19 @@ using static RootController;
 /// </summary>
 public class MenuController : SubController<UIMenuRoot>
 {
-    GameData data;
     public List<Button> levelButtons = new List<Button>();
     Array values = Enum.GetValues(typeof(WinCondition));
 
-    private void Start()
-    {
-        Array values = Enum.GetValues(typeof(WinCondition));
-        data = new GameData();
-        SetLevelData(data);
-    }
     public override void EngageController()
     {
+        Debug.Log(root.gameData.lastOpenedLevel);
         for (int i = 0; i < levelButtons.Count; i++)
         {
-            if (i < root.lastOpenedLevel)
+            if (i < root.gameData.lastOpenedLevel)
                 root.ChangeLevelType(LevelTypeEnum.Completed, levelButtons[i]);
-            else if (i == root.lastOpenedLevel)
+            else if (i == root.gameData.lastOpenedLevel)
                 root.ChangeLevelType(LevelTypeEnum.Open, levelButtons[i]);
-            else if(i > root.lastOpenedLevel)
+            else if(i > root.gameData.lastOpenedLevel)
                 root.ChangeLevelType(LevelTypeEnum.Closed, levelButtons[i]);
         }
 
@@ -53,18 +46,18 @@ public class MenuController : SubController<UIMenuRoot>
     /// </summary>
     private void StartGame()
     {
-
-        if (ui.MenuView.currentLevelIndex == data.levelIndex)
+        
+        if (ui.MenuView.currentLevelIndex == root.gameData.levelIndex)
         {
-            // Changing controller to Game Controller.
             root.ChangeController(ControllerTypeEnum.Game);
         }
         else
         {
             DataStorage.Instance.RemoveData(Keys.GAME_DATA_KEY);
-            SetLevelData(data);
+            root.gameData = SetLevelData(root.gameData);
             root.ChangeController(ControllerTypeEnum.Game);
         }
+        Debug.Log(root.gameData.levelIndex);
     }
 
     /// <summary>
@@ -72,18 +65,21 @@ public class MenuController : SubController<UIMenuRoot>
     /// </summary>
     private void QuitGame()
     {
+        // Save game data and
         // Closing the game.
+        root.SaveData(root.gameData);
         Application.Quit();
     }
 
-    private void SetLevelData(GameData data)
+    public GameData SetLevelData(GameData _data)
     {
-        data.levelIndex = ui.MenuView.currentLevelIndex;
-        data.asteroidsPopulation = UnityEngine.Random.Range(1, 5);
-        data.winCondition = (int)values.GetValue(UnityEngine.Random.Range(0, values.Length));
-        data.scoreToWin = UnityEngine.Random.Range(500, 1500);
-        data.asteroidsToWin = UnityEngine.Random.Range(15, 30);
+        _data.levelIndex = ui.MenuView.currentLevelIndex;
+        _data.asteroidsPopulation = UnityEngine.Random.Range(1, 5);
+        _data.winCondition = (int)values.GetValue(UnityEngine.Random.Range(0, values.Length));
+        _data.scoreToWin = UnityEngine.Random.Range(500, 1500);
+        _data.asteroidsToWin = UnityEngine.Random.Range(15, 30);
+        DataStorage.Instance.SaveData(Keys.GAME_DATA_KEY, _data);
 
-        DataStorage.Instance.SaveData(Keys.GAME_DATA_KEY, data);
+        return _data;
     }
 }

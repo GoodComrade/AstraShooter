@@ -1,4 +1,6 @@
 ﻿using TMPro;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,8 +30,12 @@ public class RootController : MonoBehaviour
         CountWin
     }
 
-    public int lastOpenedLevel = 0;
+    //public int lastOpenedLevel = 0;
+    [HideInInspector]
     public bool IsLastGameFinished;
+
+    [HideInInspector]
+    public GameData gameData;
 
     // References to the subcontrollers.
     [Header("Controllers")]
@@ -47,6 +53,20 @@ public class RootController : MonoBehaviour
         gameController.root = this;
         gameOverController.root = this;
 
+        if (!File.Exists("./Saves/SavedGame.bin"))
+        {
+            gameData = menuController.SetLevelData(gameData);
+            Debug.Log("levelIndex:" + gameData.levelIndex +
+            ", scoreToWin:" + gameData.scoreToWin +
+            ", asteroidsPopulation:" + gameData.asteroidsPopulation +
+            ", asteroidsToWin:" + gameData.asteroidsToWin +
+            ", winCondition:" + gameData.winCondition);
+        }
+        else
+        {
+            gameData = LoadData(gameData);
+        }
+            
         ChangeController(ControllerTypeEnum.Menu);
     }
     /// <summary>
@@ -75,10 +95,6 @@ public class RootController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Method used by subcontrollers to change game phase.
-    /// </summary>
-    /// <param name="controller">Controller type.</param>
     public void ChangeLevelType(LevelTypeEnum controller, Button button)
     {
         switch (controller)
@@ -108,5 +124,30 @@ public class RootController : MonoBehaviour
         menuController.DisengageController();
         gameController.DisengageController();
         gameOverController.DisengageController();
+    }
+
+    public void SaveData(GameData _gameData)
+    {
+        if(!Directory.Exists(Keys.SAVE_DIRECTORY_KEY))
+            Directory.CreateDirectory(Keys.SAVE_DIRECTORY_KEY);
+
+        BinaryFormatter formatter = new BinaryFormatter();
+        _gameData = DataStorage.Instance.GetData<GameData>(Keys.GAME_DATA_KEY);
+
+        FileStream saveFile = File.Create(Keys.SAVE_DIRECTORY_KEY + "/" + Keys.SAVE_NAME_KEY + ".bin");
+        formatter.Serialize(saveFile, _gameData);
+        saveFile.Close();
+    }
+
+    public GameData LoadData(GameData _gameData)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        FileStream saveFile = File.Open(Keys.SAVE_DIRECTORY_KEY + "/" + Keys.SAVE_NAME_KEY + ".bin", FileMode.Open);
+        _gameData = (GameData)formatter.Deserialize(saveFile);
+        saveFile.Close();
+
+        DataStorage.Instance.SaveData(Keys.GAME_DATA_KEY, _gameData);
+
+        return _gameData;
     }
 }

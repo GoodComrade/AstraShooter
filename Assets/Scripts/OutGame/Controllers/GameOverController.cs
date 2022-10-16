@@ -9,13 +9,10 @@ public class GameOverController : SubController<UIGameOverRoot>
     // Reference to current player data.
     private PlayerData playerData;
 
-    // Reference to current game data.
-    private GameData gameData;
     public override void EngageController()
     {
         // Getting game data from data storage.
         playerData = DataStorage.Instance.GetData<PlayerData>(Keys.PLAYER_DATA_KEY);
-        gameData = DataStorage.Instance.GetData<GameData>(Keys.GAME_DATA_KEY);
 
         // Removing player data from data storage as it is no longer needed there.
         DataStorage.Instance.RemoveData(Keys.PLAYER_DATA_KEY);
@@ -23,8 +20,8 @@ public class GameOverController : SubController<UIGameOverRoot>
         // Showing game data in UI.
         ui.GameOverView.ShowScore(playerData);
 
-        if(root.IsLastGameFinished && gameData.levelIndex == root.lastOpenedLevel)
-            root.lastOpenedLevel++;
+        if(root.IsLastGameFinished && root.gameData.levelIndex == root.gameData.lastOpenedLevel)
+            root.gameData.lastOpenedLevel++;
 
         // Attaching UI events.
         ui.GameOverView.OnReplayClicked += ReplayGame;

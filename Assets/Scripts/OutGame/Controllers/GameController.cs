@@ -5,8 +5,6 @@ using UnityEngine.SocialPlatforms.Impl;
 // Controller responsible for game phase.
 public class GameController : SubController<UIGameRoot>
 {
-    // Reference to current game data.
-    private GameData gameData;
     private PlayerData playerData;
     
     [SerializeField]
@@ -39,7 +37,6 @@ public class GameController : SubController<UIGameRoot>
     public void PlayerTakeDamage(PlayerController controller)
     {
         playerHP--;
-        Debug.Log(playerHP);
         if(playerHP <= 0)
         {
             PlayerDie(controller);
@@ -82,17 +79,16 @@ public class GameController : SubController<UIGameRoot>
     public override void EngageController()
     {
         playerData = new PlayerData();
-        gameData = DataStorage.Instance.GetData<GameData>(Keys.GAME_DATA_KEY);
         SetScore(0);
         SetHP(3);
-        SetGameData(gameData);
+        SetGameData(root.gameData);
         switch (levelWinCondition)
         {
             case 0:
-                scoreWinCondition = gameData.scoreToWin;
+                scoreWinCondition = root.gameData.scoreToWin;
                 break;
             case 1:
-                scoreWinCondition = gameData.asteroidsToWin;
+                scoreWinCondition = root.gameData.asteroidsToWin;
                 break;
             default:
                 break;
