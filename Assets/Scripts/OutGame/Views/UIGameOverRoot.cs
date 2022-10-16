@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// UI root class for Game Over controller.
+/// корневой класс для контроллера конца игрового уровня.
 /// </summary>
 public class UIGameOverRoot : UIRoot
 {

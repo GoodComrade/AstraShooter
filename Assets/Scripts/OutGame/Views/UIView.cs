@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Base class for every UI element and view.
+/// Базовый класс для всех представлений UI.
 /// </summary>
 public class UIView : MonoBehaviour
 {
     /// <summary>
-    /// Method used to show view or element.
+    /// Метод для отображения представления или эллемента.
     /// </summary>
     public virtual void ShowView()
     {
@@ -14,7 +14,7 @@ public class UIView : MonoBehaviour
     }
 
     /// <summary>
-    /// Method used to hide view or element.
+    /// Метод для сокрытия представления или эллемента.
     /// </summary>
     public virtual void HideView()
     {

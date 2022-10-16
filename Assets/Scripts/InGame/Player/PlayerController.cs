@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
 
     [SerializeField]
-    private float thrust = 6f;
+    private float thrust = 2f;
     [SerializeField]
     private float rotationSpeed = 180f;
     [SerializeField]
@@ -24,6 +24,9 @@ public class PlayerController : MonoBehaviour
     float sceneLeftEdge;
     float sceneTopEdge;
     float sceneBottomEdge;
+
+    bool IsInvul = false;
+    float invulTime = 3f;
 
     private void Awake()
     {
@@ -43,6 +46,7 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        // Управление стрельбой
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             InvokeRepeating(nameof(Fire), 0.000001f, firingRate);
@@ -70,6 +74,8 @@ public class PlayerController : MonoBehaviour
     }
     private void CheckPosition()
     {
+        // В этом методе происходит проверка на вылет за край экрана
+        // и возвращение обратно на экран
         if (transform.position.x > sceneRightEdge)
         {
             transform.position = new Vector2(sceneLeftEdge, transform.position.y);
@@ -90,16 +96,29 @@ public class PlayerController : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collisionInfo)
     {
         
-        if (collisionInfo.collider.tag == "Asteroid")
+        if (collisionInfo.collider.tag == "Asteroid" && !IsInvul)
         {
+            // При столкновении с астероидом вызывается метод игрового контролера для пересчета оставшихся жизней.
+            // Затем на время включается неуязвимость к столкновениям, что бы у игрока была возможность отлететь от точки контакта.
             FindObjectOfType<GameController>().PlayerTakeDamage(this);
-            rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, 0f);
+            rb.velocity = Vector3.zero;
             rb.angularVelocity = 0f;
+            StartCoroutine(InvulTimer());
         }
     }
 
     public void CancleFire()
     {
         CancelInvoke(nameof(Fire));
+    }
+
+    // Костыль, добавленный в последние мгновения
+    // Без него слишком быстро кончаются жизни.
+    //(С ним в редакторе выдает ошибку т.к. корутина вызывается даже после перехода на фазу конца уровня, когда кораблик не активен)
+    IEnumerator InvulTimer()
+    {
+        IsInvul = true;
+        yield return new WaitForSeconds(invulTime);
+        IsInvul = false;
     }
 }

@@ -3,22 +3,20 @@ using UnityEngine.Events;
 using TMPro;
 
 /// <summary>
-/// Game over view with events for buttons and showing data.
+/// Представление конца игры с ивентами для кнопок и отображением счета игрока.
 /// </summary>
 public class UIGameOverView : UIView
 {
-    // Reference to score label.
     [SerializeField]
     private TextMeshProUGUI scoreLabel;
 
-    // Event called when Replay Button is clicked.
     public UnityAction OnReplayClicked;
-    // Event called when Menu Button is clicked.
+
     public UnityAction OnMenuClicked;
 
 
     /// <summary>
-    /// Method called by Replay Button.
+    /// Метод, вызываемой кнопкой Replay.
     /// </summary>
     public void ReplayClick()
     {
@@ -26,7 +24,7 @@ public class UIGameOverView : UIView
     }
 
     /// <summary>
-    /// Method called by Menu Button.
+    /// Метод, вызываемой кнопкой Menu.
     /// </summary>
     public void MenuClicked()
     {
@@ -34,7 +32,7 @@ public class UIGameOverView : UIView
     }
 
     /// <summary>
-    /// Method used to show game data in UI.
+    /// Методб используемый для отображения финального счета игрока в UI.
     /// </summary>
     /// <param name="gameData">Game data.</param>
     public void ShowScore(PlayerData data)

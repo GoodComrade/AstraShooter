@@ -1,26 +1,31 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-// Menu view with events for buttons.
+/// <summary>
+/// Представление меню с ивентами для кнопок.
+/// </summary>
 public class UIMenuView : UIView
 {
-    // Event called when Play Button is clicked.
     public UnityAction OnPlayClicked;
 
-    // Event called when Quit Button is clicked.
     public UnityAction OnQuitClicked;
 
     [HideInInspector]
     public int currentLevelIndex = 0;
 
-    // Method called by Play Button.
+    /// <summary>
+    /// Метод, вызываемый кнопкой игрового уровня..
+    /// </summary>
+    /// <param name="index">Индекс выбранного уровня</param>
     public void PlayClicked(int index)
     {
         currentLevelIndex = index;
         OnPlayClicked?.Invoke();
     }
 
-    // Method called by Quit Button.
+    /// <summary>
+    /// Метод, вызываемый кнопкой выхода из игры.
+    /// </summary>
     public void QuitClicked()
     {
         OnQuitClicked?.Invoke();

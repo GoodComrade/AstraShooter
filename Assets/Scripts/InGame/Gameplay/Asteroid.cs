@@ -27,24 +27,21 @@ public class Asteroid : MonoBehaviour
     private void Start()
     {
         spawner = FindObjectOfType<AsteroidSpawner>();
-        // Assign random properties to make each asteroid feel unique
+        // Присваиваем рандомные значения для придания каждому астероиду уникальности.
         spriteRenderer.sprite = sprites[Random.Range(0, sprites.Length)];
         transform.eulerAngles = new Vector3(0f, 0f, Random.value * 360f);
 
-        // Set the scale and mass of the asteroid based on the assigned size so
-        // the physics is more realistic
+        // Задаем значение и массу астероида, основываясь на размере
+        // для более реалистичного физического отображения.
         transform.localScale = Vector3.one * size;
         rigidbody.mass = size;
 
-        // Destroy the asteroid after it reaches its max lifetime
-        //gameController.asteroids.Remove(this);
+        // Уничтожаем астероид после достижения им максимального времени жизни.
         Destroy(gameObject, maxLifetime);
     }
 
     public void SetTrajectory(Vector2 direction)
     {
-        // The asteroid only needs a force to be added once since they have no
-        // drag to make them stop moving
         rigidbody.AddForce(direction * movementSpeed);
     }
 
@@ -52,18 +49,15 @@ public class Asteroid : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Projectile"))
         {
-            // Check if the asteroid is large enough to split in half
-            // (both parts must be greater than the minimum size)
+            // Проверка на достаточный размер астероида
+            // (обе части должны быть больше минимального допустимого размера)
             if ((size * 0.5f) >= minSize)
             {
                 CreateSplit();
                 CreateSplit();
             }
 
-            //FindObjectOfType<GameManager>().AsteroidDestroyed(this);
-
-            // Destroy the current asteroid since it is either replaced by two
-            // new asteroids or small enough to be destroyed by the bullet
+            // Уничтожаем текущий астероид после создания частей поменьше
             FindObjectOfType<GameController>().AsteroidDestroyed(this);
             spawner.asteroids.Remove(this);
             Destroy(gameObject);
@@ -72,17 +66,17 @@ public class Asteroid : MonoBehaviour
 
     private Asteroid CreateSplit()
     {
-        // Set the new asteroid poistion to be the same as the current asteroid
-        // but with a slight offset so they do not spawn inside each other
+        // Задаем позицию для нового астероида. Такую же как у родителя,
+        // но с небольшим офсетом, что бы они не создавались внутри друг-друга.
         Vector2 position = transform.position;
         position += Random.insideUnitCircle * 0.5f;
 
-        // Create the new asteroid at half the size of the current
+        // Создаем новый астероид, в двое еньше родителя.
         Asteroid half = Instantiate(this, position, transform.rotation);
         spawner.asteroids.Add(half);
         half.size = size * 0.5f;
 
-        // Set a random trajectory
+        // Задаем рандомную траекторию.
         half.SetTrajectory(Random.insideUnitCircle.normalized);
 
         return half;

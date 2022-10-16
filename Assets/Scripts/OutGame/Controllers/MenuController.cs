@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using static RootController;
 
 /// <summary>
-/// Controller responsible for menu phase.
+/// Котроллер, ответственный за меню.
 /// </summary>
 public class MenuController : SubController<UIMenuRoot>
 {
@@ -14,7 +14,8 @@ public class MenuController : SubController<UIMenuRoot>
 
     public override void EngageController()
     {
-        Debug.Log(root.gameData.lastOpenedLevel);
+        // Установка отображения и активности кнопок 
+        // в зависимости от текущего прогресса.
         for (int i = 0; i < levelButtons.Count; i++)
         {
             if (i < root.gameData.lastOpenedLevel)
@@ -42,31 +43,26 @@ public class MenuController : SubController<UIMenuRoot>
     }
 
     /// <summary>
-    /// Handling UI Start Button Click.
+    /// Содержит действие нажатия на кнопку уровня.
     /// </summary>
     private void StartGame()
     {
         
-        if (ui.MenuView.currentLevelIndex == root.gameData.levelIndex)
-        {
-            root.ChangeController(ControllerTypeEnum.Game);
-        }
-        else
+        if (root.gameData.levelIndex != ui.MenuView.currentLevelIndex)
         {
             DataStorage.Instance.RemoveData(Keys.GAME_DATA_KEY);
             root.gameData = SetLevelData(root.gameData);
-            root.ChangeController(ControllerTypeEnum.Game);
         }
-        Debug.Log(root.gameData.levelIndex);
+        root.ChangeController(ControllerTypeEnum.Game);
     }
 
     /// <summary>
-    /// Handling UI Quit Button Click.
+    /// Содержит действие нажатия на кнопку выхода.
     /// </summary>
     private void QuitGame()
     {
-        // Save game data and
-        // Closing the game.
+        // Сохраняем данные и
+        // закрываем игру.
         root.SaveData(root.gameData);
         Application.Quit();
     }

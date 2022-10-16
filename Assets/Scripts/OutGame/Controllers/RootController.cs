@@ -5,11 +5,11 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// Root controller responsible for changing game phases with SubControllers.
+/// Корневой контроллер, ответственный за смену игровых подконтроллеров.
 /// </summary>
 public class RootController : MonoBehaviour
 {
-    // SubControllers types.
+    // Типы подконтроллеров.
     public enum ControllerTypeEnum
     {
         Menu,
@@ -17,6 +17,7 @@ public class RootController : MonoBehaviour
         GameOver
     }
 
+    // Типы уровней.
     public enum LevelTypeEnum
     {
         Open,
@@ -24,20 +25,20 @@ public class RootController : MonoBehaviour
         Completed
     }
 
+    // Типы уловий победы.
     public enum WinCondition
     {
         ScoreWin,
         CountWin
     }
 
-    //public int lastOpenedLevel = 0;
     [HideInInspector]
     public bool IsLastGameFinished;
 
     [HideInInspector]
     public GameData gameData;
 
-    // References to the subcontrollers.
+    // Ссылки на подконтроллеры.
     [Header("Controllers")]
     [SerializeField]
     private MenuController menuController;
@@ -46,7 +47,6 @@ public class RootController : MonoBehaviour
     [SerializeField]
     private GameOverController gameOverController;
 
-    // Unity method called on first frame.
     private void Start()
     {
         menuController.root = this;
@@ -69,8 +69,14 @@ public class RootController : MonoBehaviour
             
         ChangeController(ControllerTypeEnum.Menu);
     }
+
+    public void IncreaseLastOpened()
+    {
+        if (IsLastGameFinished && gameData.levelIndex == gameData.lastOpenedLevel)
+            gameData.lastOpenedLevel++;
+    }
     /// <summary>
-    /// Method used by subcontrollers to change game phase.
+    /// Метод, используемый подконтроллером для смены игровой фазы.
     /// </summary>
     /// <param name="controller">Controller type.</param>
     public void ChangeController(ControllerTypeEnum controller)
@@ -117,7 +123,7 @@ public class RootController : MonoBehaviour
     }
 
     /// <summary>
-    /// Method used to disable all attached subcontrollers.
+    /// Метод, используемый для отключения всех контроллеров на сцене.
     /// </summary>
     public void DisengageControllers()
     {
@@ -145,6 +151,13 @@ public class RootController : MonoBehaviour
         FileStream saveFile = File.Open(Keys.SAVE_DIRECTORY_KEY + "/" + Keys.SAVE_NAME_KEY + ".bin", FileMode.Open);
         _gameData = (GameData)formatter.Deserialize(saveFile);
         saveFile.Close();
+
+        // Максимально топорный костыль
+        // Однако иначе, по непонятной причине,
+        // Это поле структуры отображается на 1 меньше.
+        // Отловить этот баг времени не было...
+        if (_gameData.lastOpenedLevel < 4)
+            _gameData.lastOpenedLevel++;
 
         DataStorage.Instance.SaveData(Keys.GAME_DATA_KEY, _gameData);
 

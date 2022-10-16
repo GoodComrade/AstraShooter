@@ -2,28 +2,22 @@
 using UnityEngine.UI;
 
 /// <summary>
-/// Controller responsible for game over phase.
+/// Контроллер, ответственный за фазу конца игрового уровня.
 /// </summary>
 public class GameOverController : SubController<UIGameOverRoot>
 {
-    // Reference to current player data.
     private PlayerData playerData;
 
     public override void EngageController()
     {
-        // Getting game data from data storage.
         playerData = DataStorage.Instance.GetData<PlayerData>(Keys.PLAYER_DATA_KEY);
 
-        // Removing player data from data storage as it is no longer needed there.
         DataStorage.Instance.RemoveData(Keys.PLAYER_DATA_KEY);
 
-        // Showing game data in UI.
         ui.GameOverView.ShowScore(playerData);
 
-        if(root.IsLastGameFinished && root.gameData.levelIndex == root.gameData.lastOpenedLevel)
-            root.gameData.lastOpenedLevel++;
+        root.IncreaseLastOpened();
 
-        // Attaching UI events.
         ui.GameOverView.OnReplayClicked += ReplayGame;
         ui.GameOverView.OnMenuClicked += GoToMenu;
 
@@ -34,26 +28,23 @@ public class GameOverController : SubController<UIGameOverRoot>
     {
         base.DisengageController();
 
-        // Detaching UI events.
         ui.GameOverView.OnMenuClicked -= GoToMenu;
         ui.GameOverView.OnReplayClicked -= ReplayGame;
     }
 
     /// <summary>
-    /// Handling UI Replay Button Click.
+    /// Содержит логику по нажатии на кнопку реплея.
     /// </summary>
     private void ReplayGame()
     {
-        // Changing controller to Game Controller.
         root.ChangeController(RootController.ControllerTypeEnum.Game);
     }
 
     /// <summary>
-    /// Handling UI Menu Button Click.
+    /// Содержит логику по нажатии на кнопку возврата к карте.
     /// </summary>
     private void GoToMenu()
     {
-        // Changing controller to Menu Controller.
         root.ChangeController(RootController.ControllerTypeEnum.Menu);
     }
 }

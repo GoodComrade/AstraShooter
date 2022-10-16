@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Base class for UI roots for different controllers.
+/// Базовый класс для корневых классов разных контроллеров.
 /// </summary>
 public class UIRoot : MonoBehaviour
 {
     /// <summary>
-    /// Method used to show UI.
+    /// Метод для отображения UI.
     /// </summary>
     public virtual void ShowRoot()
     {
@@ -14,7 +14,7 @@ public class UIRoot : MonoBehaviour
     }
 
     /// <summary>
-    /// Method used to hide UI.
+    /// Метод для сокрытия UI.
     /// </summary>
     public virtual void HideRoot()
     {

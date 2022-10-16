@@ -2,7 +2,9 @@
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
-// Controller responsible for game phase.
+/// <summary>
+/// Контроллер, ответственный за игровую фазу.
+/// </summary>
 public class GameController : SubController<UIGameRoot>
 {
     private PlayerData playerData;
@@ -56,15 +58,15 @@ public class GameController : SubController<UIGameRoot>
             case 0:
                 if (asteroid.size < 0.7f)
                 {
-                    SetScore(playerScore + 100); // small asteroid
+                    SetScore(playerScore + 100); // Награда за малый астероид
                 }
                 else if (asteroid.size < 1.4f)
                 {
-                    SetScore(playerScore + 50); // medium asteroid
+                    SetScore(playerScore + 50); // Награда за средний астероид
                 }
                 else
                 {
-                    SetScore(playerScore + 25); // large asteroid
+                    SetScore(playerScore + 25); // Награда за большой астероид
                 }
                 break;
             case 1:
@@ -95,7 +97,6 @@ public class GameController : SubController<UIGameRoot>
         }
         spawner.EnableSpawning();
 
-        // Attaching UI events.
         ui.GameView.OnMenuClicked += GoToMenu;
 
         base.EngageController();
@@ -105,12 +106,13 @@ public class GameController : SubController<UIGameRoot>
     {
         base.DisengageController();
         player.CancleFire();
-        // Detaching UI events.
         ui.GameView.OnMenuClicked -= GoToMenu;
     }
 
 
-    // Handling UI Finish Button Click.
+    /// <summary>
+    /// Метод, вызываемый вслучае смерти игрока или когда условия для победы выполнены.
+    /// </summary>
     private void FinishGame()
     {
         spawner.DisableSpawning();
@@ -120,17 +122,17 @@ public class GameController : SubController<UIGameRoot>
         }
         spawner.asteroids.Clear();
         playerData.playerScore = playerScore;
-        // Saving GameData in DataStorage.
+        
         DataStorage.Instance.SaveData(Keys.PLAYER_DATA_KEY, playerData);
 
-        // Chaning controller to Game Over Controller
         root.ChangeController(RootController.ControllerTypeEnum.GameOver);
     }
 
-    // Handling UI Menu Button Click.
+    /// <summary>
+    /// Метод, вызываемый вслучае выхода на карту.
+    /// </summary>
     private void GoToMenu()
     {
-        // Changing controller to Menu Controller.
         root.ChangeController(RootController.ControllerTypeEnum.Menu);
     }
     private void SetScore(int score)

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// UI root class for Menu controller.
+/// Уорневой UI класс для контроллеров меню.
 /// </summary>
 public class UIMenuRoot : UIRoot
 {

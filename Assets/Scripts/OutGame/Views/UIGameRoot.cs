@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
-
-// UI root for Game controller.
+/// <summary>
+/// Корневой класс для игрового контроллера
+/// </summary>
 public class UIGameRoot : UIRoot
 {
-    // Reference to game view class.
     [SerializeField]
     private UIGameView gameView;
     public UIGameView GameView => gameView;
