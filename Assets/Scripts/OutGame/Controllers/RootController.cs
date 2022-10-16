@@ -28,13 +28,12 @@ public class RootController : MonoBehaviour
         CountWin
     }
 
+    public int lastOpenedLevel = 0;
+
     // References to the subcontrollers.
     [Header("Controllers")]
-    [SerializeField]
     private MenuController menuController;
-    [SerializeField]
     private GameController gameController;
-    [SerializeField]
     private GameOverController gameOverController;
 
     // Unity method called on first frame.
@@ -78,8 +77,6 @@ public class RootController : MonoBehaviour
     /// <param name="controller">Controller type.</param>
     public void ChangeLevelType(LevelTypeEnum controller, Button button)
     {
-
-        // Enabling subcontroller based on type.
         switch (controller)
         {
             case LevelTypeEnum.Open:

@@ -1225,6 +1225,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4371659225555484, guid: 65c6c5d1cbd635447ae9cef14e89ae95, type: 3}
   m_PrefabInstance: {fileID: 110271896}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &460916967 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114529287386758864, guid: 65c6c5d1cbd635447ae9cef14e89ae95, type: 3}
+  m_PrefabInstance: {fileID: 110271896}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 484448ba3bb36b6479fa7ba8eb91112a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -3404,7 +3415,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1794565244
 Transform:
   m_ObjectHideFlags: 0
@@ -3882,6 +3893,7 @@ MonoBehaviour:
   root: {fileID: 0}
   ui: {fileID: 1436517716}
   spawner: {fileID: 1274327753}
+  player: {fileID: 460916967}
   playerHP: 3
   playerScore: 0
   scoreWinCondition: 0

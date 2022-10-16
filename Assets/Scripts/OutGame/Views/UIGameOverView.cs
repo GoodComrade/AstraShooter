@@ -11,12 +11,11 @@ public class UIGameOverView : UIView
     [SerializeField]
     private TextMeshProUGUI scoreLabel;
 
-    // Reference to time label.
-    //[SerializeField]
-    //private TextMeshProUGUI timeLabel;
-
     // Event called when Replay Button is clicked.
     public UnityAction OnReplayClicked;
+    // Event called when Menu Button is clicked.
+    public UnityAction OnMenuClicked;
+
 
     /// <summary>
     /// Method called by Replay Button.
@@ -25,9 +24,6 @@ public class UIGameOverView : UIView
     {
         OnReplayClicked?.Invoke();
     }
-
-    // Event called when Menu Button is clicked.
-    public UnityAction OnMenuClicked;
 
     /// <summary>
     /// Method called by Menu Button.

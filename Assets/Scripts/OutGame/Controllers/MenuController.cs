@@ -11,26 +11,35 @@ using static RootController;
 public class MenuController : SubController<UIMenuRoot>
 {
     GameData data;
-    [SerializeField]
-    private List<Button> levelButtons = new List<Button>();
+    public List<Button> levelButtons = new List<Button>();
     Array values = Enum.GetValues(typeof(WinCondition));
 
     private void Start()
     {
         Array values = Enum.GetValues(typeof(WinCondition));
         data = new GameData();
-        for(int i = 0; i < levelButtons.Count; i++)
+        /*for(int i = 0; i < levelButtons.Count; i++)
         {
             if (i != ui.MenuView.currentLevelIndex)
                 root.ChangeLevelType(LevelTypeEnum.Closed, levelButtons[i]);
             else if(i == ui.MenuView.currentLevelIndex)
                 root.ChangeLevelType(LevelTypeEnum.Open, levelButtons[i]);
-        }
+        }*/
 
         SetLevelData(data);
     }
     public override void EngageController()
     {
+        for (int i = 0; i < levelButtons.Count; i++)
+        {
+            if (i < root.lastOpenedLevel)
+                root.ChangeLevelType(LevelTypeEnum.Completed, levelButtons[i]);
+            else if (i == root.lastOpenedLevel)
+                root.ChangeLevelType(LevelTypeEnum.Open, levelButtons[i]);
+            else if(i > root.lastOpenedLevel)
+                root.ChangeLevelType(LevelTypeEnum.Closed, levelButtons[i]);
+        }
+
         // Attaching UI events.
         ui.MenuView.OnPlayClicked += StartGame;
         ui.MenuView.OnQuitClicked += QuitGame;
@@ -52,6 +61,7 @@ public class MenuController : SubController<UIMenuRoot>
     /// </summary>
     private void StartGame()
     {
+
         if (ui.MenuView.currentLevelIndex == data.levelIndex)
         {
             // Changing controller to Game Controller.

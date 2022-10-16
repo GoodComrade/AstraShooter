@@ -1,22 +1,28 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Controller responsible for game over phase.
 /// </summary>
 public class GameOverController : SubController<UIGameOverRoot>
 {
-    // Reference to current game data.
+    // Reference to current player data.
     private PlayerData playerData;
 
+    // Reference to current game data.
+    private GameData gameData;
     public override void EngageController()
     {
         // Getting game data from data storage.
         playerData = DataStorage.Instance.GetData<PlayerData>(Keys.PLAYER_DATA_KEY);
-        // Removing game data from data storage as it is no longer needed there.
+        gameData = DataStorage.Instance.GetData<GameData>(Keys.GAME_DATA_KEY);
+
+        // Removing player data from data storage as it is no longer needed there.
         DataStorage.Instance.RemoveData(Keys.PLAYER_DATA_KEY);
 
         // Showing game data in UI.
         ui.GameOverView.ShowScore(playerData);
+        root.lastOpenedLevel++;
 
         // Attaching UI events.
         ui.GameOverView.OnReplayClicked += ReplayGame;
@@ -48,9 +54,6 @@ public class GameOverController : SubController<UIGameOverRoot>
     /// </summary>
     private void GoToMenu()
     {
-        // Removing game data from data storage as it is no longer needed there.
-        //DataStorage.Instance.RemoveData(Keys.GAME_DATA_KEY);
-
         // Changing controller to Menu Controller.
         root.ChangeController(RootController.ControllerTypeEnum.Menu);
     }
