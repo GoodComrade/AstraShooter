@@ -9,4 +9,6 @@ public class Keys
 {
     // Game Data key for Data storage
     public const string GAME_DATA_KEY = "GameData";
+    // Player Data key for Data storage
+    public const string PLAYER_DATA_KEY = "PlayerData";
 }

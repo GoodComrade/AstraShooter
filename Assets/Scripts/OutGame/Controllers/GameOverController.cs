@@ -6,21 +6,21 @@
 public class GameOverController : SubController<UIGameOverRoot>
 {
     // Reference to current game data.
-    private GameData gameData;
+    private PlayerData playerData;
 
     public override void EngageController()
     {
         // Getting game data from data storage.
-        gameData = DataStorage.Instance.GetData<GameData>(Keys.GAME_DATA_KEY);
+        playerData = DataStorage.Instance.GetData<PlayerData>(Keys.PLAYER_DATA_KEY);
         // Removing game data from data storage as it is no longer needed there.
-        DataStorage.Instance.RemoveData(Keys.GAME_DATA_KEY);
+        DataStorage.Instance.RemoveData(Keys.PLAYER_DATA_KEY);
+
+        // Showing game data in UI.
+        ui.GameOverView.ShowScore(playerData);
 
         // Attaching UI events.
         ui.GameOverView.OnReplayClicked += ReplayGame;
         ui.GameOverView.OnMenuClicked += GoToMenu;
-
-        // Showing game data in UI.
-        ui.GameOverView.ShowScore(gameData);
 
         base.EngageController();
     }
@@ -48,6 +48,9 @@ public class GameOverController : SubController<UIGameOverRoot>
     /// </summary>
     private void GoToMenu()
     {
+        // Removing game data from data storage as it is no longer needed there.
+        //DataStorage.Instance.RemoveData(Keys.GAME_DATA_KEY);
+
         // Changing controller to Menu Controller.
         root.ChangeController(RootController.ControllerTypeEnum.Menu);
     }

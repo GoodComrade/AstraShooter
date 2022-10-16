@@ -41,9 +41,8 @@ public class UIGameOverView : UIView
     /// Method used to show game data in UI.
     /// </summary>
     /// <param name="gameData">Game data.</param>
-    public void ShowScore(GameData gameData)
+    public void ShowScore(PlayerData data)
     {
-        scoreLabel.text = gameData.gameScore.ToString("N0");
-        //timeLabel.text = string.Format("{0:###0}:{1:00.000}", (int)(gameData.gameTime / 60), (gameData.gameTime % 60));
+        scoreLabel.text = data.playerScore.ToString();
     }
 }

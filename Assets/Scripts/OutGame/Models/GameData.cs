@@ -1,14 +1,20 @@
 ﻿using UnityEngine;
 
-/// <summary>
-/// Game data model.
-/// </summary>
+// Game data model.
 public class GameData
 {
-    // Player score
-    public int gameScore = 0;
+    // Index of selected level
+    public int levelIndex;
 
     // Generated population of asteroids
-    public int asteroidsPopulation = 0;
+    public int asteroidsPopulation;
 
+    // Generated win condition
+    public int winCondition;
+
+    //if win condition is score amount
+    public int scoreToWin;
+
+    //If win condition is destroyed asteroids amount
+    public int asteroidsToWin;
 }

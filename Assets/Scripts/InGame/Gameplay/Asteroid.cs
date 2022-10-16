@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Asteroid : MonoBehaviour
 {
-    public Rigidbody2D rigidbody { get; private set; }
+    public new Rigidbody2D rigidbody { get; private set; }
     public SpriteRenderer spriteRenderer { get; private set; }
     public Sprite[] sprites;
 
@@ -16,6 +16,8 @@ public class Asteroid : MonoBehaviour
     public float movementSpeed = 50f;
     public float maxLifetime = 30f;
 
+    private AsteroidSpawner spawner;
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -24,6 +26,7 @@ public class Asteroid : MonoBehaviour
 
     private void Start()
     {
+        spawner = FindObjectOfType<AsteroidSpawner>();
         // Assign random properties to make each asteroid feel unique
         spriteRenderer.sprite = sprites[Random.Range(0, sprites.Length)];
         transform.eulerAngles = new Vector3(0f, 0f, Random.value * 360f);
@@ -34,6 +37,7 @@ public class Asteroid : MonoBehaviour
         rigidbody.mass = size;
 
         // Destroy the asteroid after it reaches its max lifetime
+        //gameController.asteroids.Remove(this);
         Destroy(gameObject, maxLifetime);
     }
 
@@ -60,6 +64,8 @@ public class Asteroid : MonoBehaviour
 
             // Destroy the current asteroid since it is either replaced by two
             // new asteroids or small enough to be destroyed by the bullet
+            FindObjectOfType<GameController>().AsteroidDestroyed(this);
+            spawner.asteroids.Remove(this);
             Destroy(gameObject);
         }
     }
@@ -73,6 +79,7 @@ public class Asteroid : MonoBehaviour
 
         // Create the new asteroid at half the size of the current
         Asteroid half = Instantiate(this, position, transform.rotation);
+        spawner.asteroids.Add(half);
         half.size = size * 0.5f;
 
         // Set a random trajectory

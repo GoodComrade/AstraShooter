@@ -5,21 +5,16 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
-    private PlayerModel model;
     [SerializeField]
     private float thrust = 6f;
     [SerializeField]
     private float rotationSpeed = 180f;
     [SerializeField]
     private float MaxSpeed = 4.5f;
-    [SerializeField]
-    private int health = 3;
 
     public Projectile projectile;
     public float firingRate = 0.2f;
     public AudioClip fireSound;
-
-    private int score = 0;
     private Rigidbody2D rb;
 
     float sceneWidth;
@@ -30,12 +25,13 @@ public class PlayerController : MonoBehaviour
     float sceneTopEdge;
     float sceneBottomEdge;
 
-
+    private void Awake()
+    {
+        gameObject.SetActive(true);
+    }
     void Start()
     {
-        model = new PlayerModel();
         rb = GetComponent<Rigidbody2D>();
-        model.SetCharacterData(thrust, rotationSpeed, MaxSpeed, health, score);
 
         sceneWidth = Camera.main.orthographicSize * 2 * Camera.main.aspect;
         sceneHeight = Camera.main.orthographicSize * 2;
@@ -49,11 +45,11 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
-            InvokeRepeating("Fire", 0.000001f, firingRate);
+            InvokeRepeating(nameof(Fire), 0.000001f, firingRate);
         }
         if (Input.GetKeyUp(KeyCode.Space) || Input.GetMouseButtonUp(0))
         {
-            CancelInvoke("Fire");
+            CancleFire();
         }
 
         ControlRocket();
@@ -68,9 +64,9 @@ public class PlayerController : MonoBehaviour
 
     private void ControlRocket()
     {
-        transform.Rotate(0, 0, -Input.GetAxis("Horizontal") * model.playerRotationSpeed * Time.deltaTime);
-        rb.AddForce(transform.up * model.playerThrust * Input.GetAxis("Vertical"));
-        rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -model.playerMaxSpeed, model.playerMaxSpeed), Mathf.Clamp(rb.velocity.y, -model.playerMaxSpeed, model.playerMaxSpeed));
+        transform.Rotate(0, 0, -Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime);
+        rb.AddForce(transform.up * thrust * Input.GetAxis("Vertical"));
+        rb.velocity = new Vector2(Mathf.Clamp(rb.velocity.x, -MaxSpeed, MaxSpeed), Mathf.Clamp(rb.velocity.y, -MaxSpeed, MaxSpeed));
     }
     private void CheckPosition()
     {
@@ -96,19 +92,14 @@ public class PlayerController : MonoBehaviour
         
         if (collisionInfo.collider.tag == "Asteroid")
         {
-            model.playerHP -= 1;
+            FindObjectOfType<GameController>().PlayerTakeDamage(this);
             rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y, 0f);
             rb.angularVelocity = 0f;
-            Debug.Log(model.playerHP);
-            if (model.playerHP <= 0)
-            {
-                Die();
-            }
         }
     }
 
-    void Die()
+    public void CancleFire()
     {
-        Destroy(gameObject);
+        CancelInvoke(nameof(Fire));
     }
 }

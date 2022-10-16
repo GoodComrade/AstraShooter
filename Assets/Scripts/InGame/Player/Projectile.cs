@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour {
 
-    public Rigidbody2D rigidbody { get; private set; }
+    public new Rigidbody2D rigidbody { get; private set; }
     public float speed = 500f;
     public float maxLifetime = 10f;
 

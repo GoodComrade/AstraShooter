@@ -1,20 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-// More at: https://www.patrykgalach.com/2019/04/04/singleton-in-unity-love-or-hate/
-
-/// <summary>
-/// Data storage that uses one of the singleton implementations.
-/// Object is used to store and get data through game life.
-/// </summary>
+// Data storage that uses one of the singleton implementations.
+// Object is used to store and get data through game life.
 public class DataStorage : PersistentLazySingleton<DataStorage>
 {
     // References to all stored data
     private Dictionary<string, object> storage = new Dictionary<string, object>();
 
-    /// <summary>
-    /// Method used to save data in storage.
-    /// </summary>
+    // Method used to save data in storage.
     /// <param name="key">Key.</param>
     /// <param name="data">Data.</param>
     public void SaveData(string key, object data)
@@ -27,10 +21,8 @@ public class DataStorage : PersistentLazySingleton<DataStorage>
         storage[key] = data;
     }
 
-    /// <summary>
-    /// Method used to verify if storage has data under provided key.
-    /// </summary>
-    /// <returns><c>true</c>, if storage contains data, <c>false</c> otherwise.</returns>
+    // Method used to verify if storage has data under provided key.
+    // Return true, if storage contains data, false otherwise.
     /// <param name="key">Key.</param>
     /// <typeparam name="T">Expected data type.</typeparam>
     public bool HasData<T>(string key)
@@ -43,10 +35,8 @@ public class DataStorage : PersistentLazySingleton<DataStorage>
         return ((T)storage[key]) != null; // If storage has data but we need to verify type.
     }
 
-    /// <summary>
-    /// Method used to get data from storage.
-    /// </summary>
-    /// <returns>Data.</returns>
+    // Method used to get data from storage.
+    // Return Data.
     /// <param name="key">Key.</param>
     /// <typeparam name="T">Expected data type.</typeparam>
     public T GetData<T>(string key)
@@ -60,9 +50,7 @@ public class DataStorage : PersistentLazySingleton<DataStorage>
         return (T)storage[key];
     }
 
-    /// <summary>
-    /// Method used to remove data from storage.
-    /// </summary>
+    // Method used to remove data from storage.
     /// <param name="key">Key.</param>
     public void RemoveData(string key)
     {

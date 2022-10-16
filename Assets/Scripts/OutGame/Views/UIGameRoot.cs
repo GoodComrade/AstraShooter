@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 
-/// <summary>
-/// UI root for Game controller.
-/// </summary>
+// UI root for Game controller.
 public class UIGameRoot : UIRoot
 {
     // Reference to game view class.

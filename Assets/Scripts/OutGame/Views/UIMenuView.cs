@@ -1,28 +1,26 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-/// <summary>
-/// Menu view with events for buttons.
-/// </summary>
+// Menu view with events for buttons.
 public class UIMenuView : UIView
 {
     // Event called when Play Button is clicked.
     public UnityAction OnPlayClicked;
 
-    /// <summary>
-    /// Method called by Play Button.
-    /// </summary>
-    public void PlayClicked()
-    {
-        OnPlayClicked?.Invoke();
-    }
-
     // Event called when Quit Button is clicked.
     public UnityAction OnQuitClicked;
 
-    /// <summary>
-    /// Method called by Quit Button.
-    /// </summary>
+    [HideInInspector]
+    public int currentLevelIndex = 0;
+
+    // Method called by Play Button.
+    public void PlayClicked(int index)
+    {
+        currentLevelIndex = index;
+        OnPlayClicked?.Invoke();
+    }
+
+    // Method called by Quit Button.
     public void QuitClicked()
     {
         OnQuitClicked?.Invoke();

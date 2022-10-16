@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Root controller responsible for changing game phases with SubControllers.
@@ -13,6 +15,19 @@ public class RootController : MonoBehaviour
         GameOver
     }
 
+    public enum LevelTypeEnum
+    {
+        Open,
+        Closed,
+        Completed
+    }
+
+    public enum WinCondition
+    {
+        ScoreWin,
+        CountWin
+    }
+
     // References to the subcontrollers.
     [Header("Controllers")]
     [SerializeField]
@@ -22,9 +37,7 @@ public class RootController : MonoBehaviour
     [SerializeField]
     private GameOverController gameOverController;
 
-    /// <summary>
-    /// Unity method called on first frame.
-    /// </summary>
+    // Unity method called on first frame.
     private void Start()
     {
         menuController.root = this;
@@ -33,7 +46,6 @@ public class RootController : MonoBehaviour
 
         ChangeController(ControllerTypeEnum.Menu);
     }
-
     /// <summary>
     /// Method used by subcontrollers to change game phase.
     /// </summary>
@@ -54,6 +66,33 @@ public class RootController : MonoBehaviour
                 break;
             case ControllerTypeEnum.GameOver:
                 gameOverController.EngageController();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Method used by subcontrollers to change game phase.
+    /// </summary>
+    /// <param name="controller">Controller type.</param>
+    public void ChangeLevelType(LevelTypeEnum controller, Button button)
+    {
+
+        // Enabling subcontroller based on type.
+        switch (controller)
+        {
+            case LevelTypeEnum.Open:
+                button.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = LevelTypeEnum.Open.ToString();
+                button.interactable = true;
+                break;
+            case LevelTypeEnum.Closed:
+                button.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = LevelTypeEnum.Closed.ToString();
+                button.interactable = false;
+                break;
+            case LevelTypeEnum.Completed:
+                button.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = LevelTypeEnum.Completed.ToString();
+                button.interactable = true;
                 break;
             default:
                 break;

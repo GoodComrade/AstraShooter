@@ -11,10 +11,7 @@ public class AsteroidSpawner : MonoBehaviour
     [Range(0f, 45f)]
     public float trajectoryVariance = 15f;
 
-    private void Start()
-    {
-        InvokeRepeating(nameof(Spawn), spawnRate, spawnRate);
-    }
+    public List<Asteroid> asteroids = new List<Asteroid>();
 
     public void Spawn()
     {
@@ -37,11 +34,21 @@ public class AsteroidSpawner : MonoBehaviour
             // Create the new asteroid by cloning the prefab and set a random
             // size within the range
             Asteroid asteroid = Instantiate(asteroidPrefab, spawnPoint, rotation);
+            asteroids.Add(asteroid);
             asteroid.size = Random.Range(asteroid.minSize, asteroid.maxSize);
 
             // Set the trajectory to move in the direction of the spawner
             Vector2 trajectory = rotation * -spawnDirection;
             asteroid.SetTrajectory(trajectory);
         }
+    }
+
+    public void EnableSpawning()
+    {
+        InvokeRepeating(nameof(Spawn), spawnRate, spawnRate);
+    }
+    public void DisableSpawning()
+    {
+        CancelInvoke(nameof(Spawn));
     }
 }

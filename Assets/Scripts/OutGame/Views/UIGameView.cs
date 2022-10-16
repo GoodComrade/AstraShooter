@@ -2,21 +2,21 @@
 using UnityEngine.Events;
 using TMPro;
 
-/// <summary>
-/// Game view with events for buttons and showing data.
-/// </summary>
+// Game view with events for buttons and showing data.
 public class UIGameView : UIView
 {
     // Reference to time label.
-    //[SerializeField]
-    //private TextMeshProUGUI timeLabel;
+    [SerializeField]
+    private TextMeshProUGUI playerHPLabel;
+
+    [SerializeField]
+    private TextMeshProUGUI playerScoreLabel;
+
 
     // Event called when Finish Button is clicked.
     public UnityAction OnFinishClicked;
 
-    /// <summary>
-    /// Method called by Finish Button.
-    /// </summary>
+    // Method called by Finish Button.
     public void FinishClick()
     {
         OnFinishClicked?.Invoke();
@@ -25,20 +25,21 @@ public class UIGameView : UIView
     // Event called when Menu Button is clicked.
     public UnityAction OnMenuClicked;
 
-    /// <summary>
-    /// Method called by Menu Button.
-    /// </summary>
+    // Method called by Menu Button.
     public void MenuClicked()
     {
         OnMenuClicked?.Invoke();
     }
 
-    /// <summary>
-    /// Method used to update time label.
-    /// </summary>
-    /// <param name="time">Game time.</param>
-    /*public void UpdateTime(float time)
+    //Method used to update playerHP label.
+    public void UpdateHP(GameController controller)
     {
-        timeLabel.text = string.Format("{0:#00}:{1:00.000}", (int)(time / 60), (time % 60));
-    }*/
+        playerHPLabel.text = "X" + controller.playerHP.ToString();
+    }
+
+    // Method used to update playerScore label.
+    public void UpdateScore(GameController controller)
+    {
+        playerScoreLabel.text = controller.scoreWinCondition + "/" + controller.playerScore.ToString();
+    }
 }
