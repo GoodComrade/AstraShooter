@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 // Game data model.
-public class GameData
+public struct GameData
 {
     // Index of selected level
     public int levelIndex;
