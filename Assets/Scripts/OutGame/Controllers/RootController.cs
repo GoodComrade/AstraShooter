@@ -29,11 +29,15 @@ public class RootController : MonoBehaviour
     }
 
     public int lastOpenedLevel = 0;
+    public bool IsLastGameFinished;
 
     // References to the subcontrollers.
     [Header("Controllers")]
+    [SerializeField]
     private MenuController menuController;
+    [SerializeField]
     private GameController gameController;
+    [SerializeField]
     private GameOverController gameOverController;
 
     // Unity method called on first frame.

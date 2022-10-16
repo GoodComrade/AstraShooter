@@ -29,7 +29,11 @@ public class GameController : SubController<UIGameRoot>
         ui.GameView.UpdateScore(this);
 
         if(playerScore >= scoreWinCondition)
+        {
+            root.IsLastGameFinished = true;
             FinishGame();
+        }
+            
     }
 
     public void PlayerTakeDamage(PlayerController controller)
@@ -44,6 +48,7 @@ public class GameController : SubController<UIGameRoot>
 
     void PlayerDie(PlayerController controller)
     {
+        root.IsLastGameFinished = false;
         FinishGame();
     }
 

@@ -22,7 +22,9 @@ public class GameOverController : SubController<UIGameOverRoot>
 
         // Showing game data in UI.
         ui.GameOverView.ShowScore(playerData);
-        root.lastOpenedLevel++;
+
+        if(root.IsLastGameFinished && gameData.levelIndex == root.lastOpenedLevel)
+            root.lastOpenedLevel++;
 
         // Attaching UI events.
         ui.GameOverView.OnReplayClicked += ReplayGame;

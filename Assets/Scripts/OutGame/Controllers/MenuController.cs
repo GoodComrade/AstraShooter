@@ -18,14 +18,6 @@ public class MenuController : SubController<UIMenuRoot>
     {
         Array values = Enum.GetValues(typeof(WinCondition));
         data = new GameData();
-        /*for(int i = 0; i < levelButtons.Count; i++)
-        {
-            if (i != ui.MenuView.currentLevelIndex)
-                root.ChangeLevelType(LevelTypeEnum.Closed, levelButtons[i]);
-            else if(i == ui.MenuView.currentLevelIndex)
-                root.ChangeLevelType(LevelTypeEnum.Open, levelButtons[i]);
-        }*/
-
         SetLevelData(data);
     }
     public override void EngageController()

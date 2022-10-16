@@ -361,6 +361,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26ee6e7e53a4547bc8ee9c60820c5534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lastOpenedLevel: 0
   menuController: {fileID: 336179338}
   gameController: {fileID: 2123387180}
   gameOverController: {fileID: 1794565245}
