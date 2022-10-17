@@ -103,6 +103,7 @@ public class PlayerController : MonoBehaviour
             FindObjectOfType<GameController>().PlayerTakeDamage(this);
             rb.velocity = Vector3.zero;
             rb.angularVelocity = 0f;
+            rb.angularDrag = 0f;
             StartCoroutine(InvulTimer());
         }
     }

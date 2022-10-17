@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 
 /// <summary>
@@ -7,19 +8,19 @@ using UnityEngine.UI;
 public class GameOverController : SubController<UIGameOverRoot>
 {
     private PlayerData playerData;
+    private GameData gameData;
 
     public override void EngageController()
     {
+        ui.GameOverView.OnReplayClicked += ReplayGame;
+        ui.GameOverView.OnMenuClicked += GoToMenu;
+
         playerData = DataStorage.Instance.GetData<PlayerData>(Keys.PLAYER_DATA_KEY);
 
         DataStorage.Instance.RemoveData(Keys.PLAYER_DATA_KEY);
 
         ui.GameOverView.ShowScore(playerData);
-
-        root.IncreaseLastOpened();
-
-        ui.GameOverView.OnReplayClicked += ReplayGame;
-        ui.GameOverView.OnMenuClicked += GoToMenu;
+        IncreastLastOpened();
 
         base.EngageController();
     }
@@ -46,5 +47,18 @@ public class GameOverController : SubController<UIGameOverRoot>
     private void GoToMenu()
     {
         root.ChangeController(RootController.ControllerTypeEnum.Menu);
+    }
+
+    private void IncreastLastOpened()
+    {
+        if (root.IsLastGameFinished && gameData.levelIndex == gameData.lastOpenedLevel)
+        {
+            gameData = DataStorage.Instance.GetData<GameData>(Keys.GAME_DATA_KEY);
+            DataStorage.Instance.RemoveData(Keys.GAME_DATA_KEY);
+
+            gameData.lastOpenedLevel++;
+            root.gameData = gameData;
+            DataStorage.Instance.SaveData(Keys.GAME_DATA_KEY, root.gameData);
+        }
     }
 }

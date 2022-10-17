@@ -25,7 +25,7 @@ public class RootController : MonoBehaviour
         Completed
     }
 
-    // Типы уловий победы.
+    // Типы уcловий победы.
     public enum WinCondition
     {
         ScoreWin,
@@ -70,11 +70,6 @@ public class RootController : MonoBehaviour
         ChangeController(ControllerTypeEnum.Menu);
     }
 
-    public void IncreaseLastOpened()
-    {
-        if (IsLastGameFinished && gameData.levelIndex == gameData.lastOpenedLevel)
-            gameData.lastOpenedLevel++;
-    }
     /// <summary>
     /// Метод, используемый подконтроллером для смены игровой фазы.
     /// </summary>
@@ -151,13 +146,6 @@ public class RootController : MonoBehaviour
         FileStream saveFile = File.Open(Keys.SAVE_DIRECTORY_KEY + "/" + Keys.SAVE_NAME_KEY + ".bin", FileMode.Open);
         _gameData = (GameData)formatter.Deserialize(saveFile);
         saveFile.Close();
-
-        // Максимально топорный костыль
-        // Однако иначе, по непонятной причине,
-        // Это поле структуры отображается на 1 меньше.
-        // Отловить этот баг времени не было...
-        if (_gameData.lastOpenedLevel < 4)
-            _gameData.lastOpenedLevel++;
 
         DataStorage.Instance.SaveData(Keys.GAME_DATA_KEY, _gameData);
 

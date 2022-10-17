@@ -14,7 +14,7 @@ public class Asteroid : MonoBehaviour
     public float minSize = 0.35f;
     public float maxSize = 1.65f;
     public float movementSpeed = 50f;
-    public float maxLifetime = 30f;
+    public float maxLifetime = 20f;
 
     private AsteroidSpawner spawner;
 

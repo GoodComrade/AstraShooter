@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
 using static RootController;
@@ -14,6 +16,7 @@ public class MenuController : SubController<UIMenuRoot>
 
     public override void EngageController()
     {
+        Debug.Log(root.gameData.lastOpenedLevel);
         // Установка отображения и активности кнопок 
         // в зависимости от текущего прогресса.
         for (int i = 0; i < levelButtons.Count; i++)
@@ -47,7 +50,6 @@ public class MenuController : SubController<UIMenuRoot>
     /// </summary>
     private void StartGame()
     {
-        
         if (root.gameData.levelIndex != ui.MenuView.currentLevelIndex)
         {
             DataStorage.Instance.RemoveData(Keys.GAME_DATA_KEY);
@@ -69,6 +71,7 @@ public class MenuController : SubController<UIMenuRoot>
 
     public GameData SetLevelData(GameData _data)
     {
+        
         _data.levelIndex = ui.MenuView.currentLevelIndex;
         _data.asteroidsPopulation = UnityEngine.Random.Range(1, 5);
         _data.winCondition = (int)values.GetValue(UnityEngine.Random.Range(0, values.Length));

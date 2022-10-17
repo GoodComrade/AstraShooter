@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// Base class for SubControllers with reference to Root Controller.
+/// Базовый класс для подконтроллеров с ссылкой на корневой контроллер.
 /// </summary>
 public abstract class SubController : MonoBehaviour
 {
@@ -9,7 +9,7 @@ public abstract class SubController : MonoBehaviour
     public RootController root;
 
     /// <summary>
-    /// Method used to engage controller.
+    /// Метод для активации контроллера.
     /// </summary>
     public virtual void EngageController()
     {
@@ -17,7 +17,7 @@ public abstract class SubController : MonoBehaviour
     }
 
     /// <summary>
-    /// Method used to disengage controller.
+    /// Метод для деактивации контроллера.
     /// </summary>
     public virtual void DisengageController()
     {
@@ -26,7 +26,7 @@ public abstract class SubController : MonoBehaviour
 }
 
 /// <summary>
-/// Extending SubController class with generic reference UI Root.
+/// Расширение класса подконтроллера с обобщенной ссылкой на UI Root.
 /// </summary>
 public abstract class SubController<T> : SubController where T : UIRoot
 {
