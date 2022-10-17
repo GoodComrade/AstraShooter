@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEditor.SceneManagement;
-using UnityEditor.VersionControl;
 using UnityEngine;
 
 // Хранилище данных, использующее одну из реализаций Синглтона.

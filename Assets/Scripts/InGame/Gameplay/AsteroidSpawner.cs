@@ -15,6 +15,12 @@ public class AsteroidSpawner : MonoBehaviour
 
     public void Spawn()
     {
+        foreach (var asteroid in asteroids)
+        {
+            if (asteroid.gameObject == null)
+                asteroids.Remove(asteroid);
+        }
+
         for (int i = 0; i < amountPerSpawn; i++)
         {
             // Choose a random direction from the center of the spawner and
@@ -46,6 +52,7 @@ public class AsteroidSpawner : MonoBehaviour
     public void EnableSpawning()
     {
         InvokeRepeating(nameof(Spawn), spawnRate, spawnRate);
+        
     }
     public void DisableSpawning()
     {
